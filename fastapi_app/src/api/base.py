@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, HTTPException
 
-from src.schemas.models import Post
+from src.schemas.posts import Post  # Импортируем напрямую из файла posts.py
 
 # Временное хранилище постов
 posts_db = []
