@@ -11,17 +11,23 @@ class UserBase(BaseModel):
     is_active: bool = True
 
 
-class UserCreate(UserBase):
-    """Для создания пользователя"""
+class UserCreate(BaseModel):
+    """Для создания пользователя - все поля необязательные кроме username и password"""
+    username: str = Field(min_length=3, max_length=150)
     password: str = Field(min_length=8)
-    email: EmailStr
+    email: EmailStr | None = None
+    first_name: str | None = None
+    last_name: str | None = None
+    is_active: bool = True
 
 
 class UserUpdate(BaseModel):
-    """Для обновления данных пользователя"""
-    first_name: str | None = Field(None, max_length=150)
-    last_name: str | None = Field(None, max_length=150)
+    """Для обновления пользователя все поля необязательные"""
+    username: str | None = Field(None, min_length=3, max_length=150)
+    password: str | None = Field(None, min_length=8)
     email: EmailStr | None = None
+    first_name: str | None = None
+    last_name: str | None = None
     is_active: bool | None = None
 
 
