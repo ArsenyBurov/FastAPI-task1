@@ -1,5 +1,8 @@
 from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
+from src.schemas.users import User
+from src.schemas.categories import Category
+from src.schemas.locations import Location
 
 
 class PostBase(BaseModel):
@@ -8,8 +11,8 @@ class PostBase(BaseModel):
     text: str
     pub_date: datetime
     author_id: int
-    location_id: int | None = None
     category_id: int | None = None
+    location_id: int | None = None
     image: str | None = None
     is_published: bool = True
 
@@ -19,19 +22,30 @@ class PostCreate(PostBase):
     pass
 
 
+class PostUpdate(BaseModel):
+    """Для обновления поста - все поля необязательные"""
+    title: str | None = Field(None, max_length=256)
+    text: str | None = None
+    pub_date: datetime | None = None
+    author_id: int | None = None
+    category_id: int | None = None
+    location_id: int | None = None
+    image: str | None = None
+    is_published: bool | None = None
+
+
 class Post(PostBase):
     """Для чтения поста из БД"""
     model_config = ConfigDict(from_attributes=True)
 
     id: int
     created_at: datetime
+    # Можно добавить расширенные поля с данными связанных объектов
+    author: User | None = None
+    category: Category | None = None
+    location: Location | None = None
 
 
-class PostRequestSchema(PostCreate):
-    """Для запросов"""
-    pass
-
-
-class PostResponseSchema(Post):
-    """Для ответов"""
+class PostDetail(Post):
+    """Детальная информация о посте со всеми связями"""
     pass
