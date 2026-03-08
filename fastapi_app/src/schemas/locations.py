@@ -13,6 +13,12 @@ class LocationCreate(LocationBase):
     pass
 
 
+class LocationUpdate(BaseModel):
+    """Для обновления локации - все поля необязательные"""
+    name: str | None = Field(None, max_length=256)
+    is_published: bool | None = None
+
+
 class Location(LocationBase):
     """Для чтения локации из БД"""
     model_config = ConfigDict(from_attributes=True)
